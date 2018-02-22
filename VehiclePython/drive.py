@@ -7,9 +7,11 @@ except RuntimeError:
 #set board mode
 GPIO.setmode(GPIO.BOARD)
 
-#setup motor control GPIOS
-GPIO.setup(channel, GPIO.OUT, initial=GPIO.LOW)
-GPIO.setup(channel, GPIO.OUT, initial=GPIO.LOW)
+#setup motor control GPIOS channel 11 and 12
+gpio_channels1 = [35, 36] 
+gpio_channels2 = [37, 38]
+GPIO.setup(gpio_channels1, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(gpio_channels2, GPIO.OUT, initial=GPIO.HIGH)
 
 # initialize connectiong with the emulated serial port for bluetooth
 # initialize PWM and GPIOs for motor control
