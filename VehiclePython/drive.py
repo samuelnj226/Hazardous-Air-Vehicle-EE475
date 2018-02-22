@@ -1,4 +1,15 @@
-print "hello world"
+# try catch block taken from example code found in library documentation
+try:
+    import RPi.GPIO as GPIO
+except RuntimeError:
+    print("Error importing RPi.GPIO!  This is probably because you need superuser privileges.  You can achieve this by using 'sudo' to run your script")
+
+#set board mode
+GPIO.setmode(GPIO.BOARD)
+
+#setup motor control GPIOS
+GPIO.setup(channel, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(channel, GPIO.OUT, initial=GPIO.LOW)
 
 # initialize connectiong with the emulated serial port for bluetooth
 # initialize PWM and GPIOs for motor control
@@ -34,3 +45,6 @@ while (1)
 
 
 '''
+
+
+# for exit interrupt GPIO.cleanup()
