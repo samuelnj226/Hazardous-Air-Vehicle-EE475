@@ -6689,7 +6689,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 96: EUSART1_Write((uint8_t) (data.y) & 0xff);
 "96
 [e ( _EUSART1_Write (1 -> & -> -> . _data 1 `uc `i -> 255 `i `uc ]
-[; ;main.c: 97: printf("\n");
+[; ;main.c: 97: printf("\r\n");
 "97
 [e ( _printf :s 1C ]
 "98
@@ -6704,5 +6704,5 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 832 ]
 }
 [p f _printf 8388608 ]
-[a 1C 10 0 ]
+[a 1C 13 10 0 ]
 

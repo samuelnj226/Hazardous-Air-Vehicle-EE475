@@ -94,7 +94,7 @@ void main(void) {
         EUSART1_Write((uint8_t) (data.y) & 0xff);
         EUSART1_Write((uint8_t) (data.y >> 8) & 0xff);
         EUSART1_Write((uint8_t) (data.y) & 0xff);
-        printf("\n");
+        printf("\r\n");
     }
 }
 /**
