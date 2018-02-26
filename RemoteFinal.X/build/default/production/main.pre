@@ -8565,7 +8565,14 @@ while (1) {
 data = read_xyzvalues();
 _delay((unsigned long)((100)*(16000000/4000.0)));
 
-printf("\n\rValues are, x: %d, y: %d, z: %d", data.x, data.y, data.z);
+
+EUSART1_Write((uint8_t) (data.x >> 8) & 0xff);
+EUSART1_Write((uint8_t) (data.x) & 0xff);
+EUSART1_Write((uint8_t) (data.y >> 8) & 0xff);
+EUSART1_Write((uint8_t) (data.y) & 0xff);
+EUSART1_Write((uint8_t) (data.y >> 8) & 0xff);
+EUSART1_Write((uint8_t) (data.y) & 0xff);
+printf("\n");
 }
 }
 

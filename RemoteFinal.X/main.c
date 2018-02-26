@@ -87,7 +87,14 @@ void main(void) {
         data = read_xyzvalues();
         __delay_ms(100);
         //write_register(MMA8451_REG_PL_CFG, 0x40);
-        printf("\n\rValues are, x: %d, y: %d, z: %d", data.x, data.y, data.z);
+        //printf("\n\rValues are, x: %d, y: %d, z: %d", data.x, data.y, data.z);
+        EUSART1_Write((uint8_t) (data.x >> 8) & 0xff);
+        EUSART1_Write((uint8_t) (data.x) & 0xff);
+        EUSART1_Write((uint8_t) (data.y >> 8) & 0xff);
+        EUSART1_Write((uint8_t) (data.y) & 0xff);
+        EUSART1_Write((uint8_t) (data.y >> 8) & 0xff);
+        EUSART1_Write((uint8_t) (data.y) & 0xff);
+        printf("\n");
     }
 }
 /**

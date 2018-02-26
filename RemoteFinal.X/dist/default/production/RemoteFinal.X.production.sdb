@@ -83,10 +83,6 @@ I2C_FAIL 2
 [v ___ftmul __ftmul `(f  1 e 3 0 ]
 "20 /Applications/microchip/xc8/v1.45/sources/common/ftsub.c
 [v ___ftsub __ftsub `(f  1 e 3 0 ]
-"8 /Applications/microchip/xc8/v1.45/sources/common/lwdiv.c
-[v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
-"8 /Applications/microchip/xc8/v1.45/sources/common/lwmod.c
-[v ___lwmod __lwmod `(ui  1 e 2 0 ]
 "10 /Applications/microchip/xc8/v1.45/sources/common/sprcadd.c
 [v ___fladd __fladd `(d  1 e 3 0 ]
 "245
@@ -664,8 +660,6 @@ I2C_FAIL 2
 ]
 [u S1270 . 1 `S1248 1 . 1 0 `S1257 1 . 1 0 `S1266 1 . 1 0 ]
 [v _INTCONbits INTCONbits `VES1270  1 e 1 @4082 ]
-"354 /Applications/microchip/xc8/v1.45/sources/common/doprnt.c
-[v _dpowers dpowers `C[5]ui  1 s 10 dpowers ]
 [s S53 . 37 `uc 1 busy 1 0 :1:0 
 `uc 1 inUse 1 0 :1:1 
 `uc 1 bufferFree 1 0 :1:2 
@@ -704,8 +698,8 @@ I2C_FAIL 2
 {
 [s S1435 . 6 `i 1 x 2 0 `i 1 y 2 2 `i 1 z 2 4 ]
 "71
-[v main@data data `S1435  1 a 6 52 ]
-"92
+[v main@data data `S1435  1 a 6 54 ]
+"99
 } 0
 "44 /Users/Sam/Documents/EE475/FinalProject/RemoteFinal.X/accelerometer.h
 [s S1435 . 6 `i 1 x 2 0 `i 1 y 2 2 `i 1 z 2 4 ]
@@ -723,18 +717,12 @@ I2C_FAIL 2
 "464 /Applications/microchip/xc8/v1.45/sources/common/doprnt.c
 [v _printf printf `(i  1 e 2 0 ]
 {
-"528
-[v printf@val val `ui  1 a 2 12 ]
 "466
-[v printf@ap ap `[1]*.39v  1 a 2 8 ]
+[v printf@ap ap `[1]*.39v  1 a 2 24 ]
 "499
-[v printf@c c `c  1 a 1 14 ]
-"506
-[v printf@prec prec `c  1 a 1 11 ]
-"508
-[v printf@flag flag `uc  1 a 1 10 ]
+[v printf@c c `c  1 a 1 26 ]
 "464
-[v printf@f f `*.25Cuc  1 p 2 0 ]
+[v printf@f f `*.25Cuc  1 p 2 22 ]
 "1541
 } 0
 "178 /Users/Sam/Documents/EE475/FinalProject/RemoteFinal.X/mcc_generated_files/eusart1.c
@@ -745,28 +733,6 @@ I2C_FAIL 2
 "180
 [v putch@txData txData `uc  1 a 1 21 ]
 "181
-} 0
-"8 /Applications/microchip/xc8/v1.45/sources/common/lwmod.c
-[v ___lwmod __lwmod `(ui  1 e 2 0 ]
-{
-"11
-[v ___lwmod@counter counter `uc  1 a 1 31 ]
-"8
-[v ___lwmod@dividend dividend `ui  1 p 2 27 ]
-[v ___lwmod@divisor divisor `ui  1 p 2 29 ]
-"26
-} 0
-"8 /Applications/microchip/xc8/v1.45/sources/common/lwdiv.c
-[v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
-{
-"11
-[v ___lwdiv@quotient quotient `ui  1 a 2 25 ]
-"12
-[v ___lwdiv@counter counter `uc  1 a 1 24 ]
-"8
-[v ___lwdiv@dividend dividend `ui  1 p 2 20 ]
-[v ___lwdiv@divisor divisor `ui  1 p 2 22 ]
-"31
 } 0
 "59 /Users/Sam/Documents/EE475/FinalProject/RemoteFinal.X/main.c
 [v _printString printString `(v  1 e 1 0 ]
