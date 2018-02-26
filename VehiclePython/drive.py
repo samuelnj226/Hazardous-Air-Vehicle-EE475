@@ -7,6 +7,7 @@ except RuntimeError:
 import serial
 import sys
 import signal
+import struct
 
 #close GPIOs and serial port
 def sigterm_handler(_signo, _stack_frame):
@@ -75,7 +76,10 @@ while (1)
 
 '''
 while 1:
-     print (ser.read(6))
+    command = ser.readline()
+    unpackedCommand = struct.unpack('hhhh', command);
+    print (unpackedCommand)
+
     
 
 
