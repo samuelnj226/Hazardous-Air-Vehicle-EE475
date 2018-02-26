@@ -4,6 +4,34 @@ try:
 except RuntimeError:
     print("Error importing RPi.GPIO!  This is probably because you need superuser privileges.  You can achieve this by using 'sudo' to run your script")
 
+import serial
+import sys
+import signal
+
+#close GPIOs and serial port
+def sigterm_handler(_signo, _stack_frame):
+    GPIO.cleanup()
+    ser.close()
+    print("exiting...")
+    sys.exit(0)
+
+#set interrupt for sigterm
+signal.signal(signal.SIGTERM, sigterm_handler)
+signal.signal(signal.SIGINT, sigterm_handler)
+
+try:
+    ser = serial.Serial(
+        port='/dev/rfcomm0',
+        baudrate=115200,
+        parity='N',
+        stopbits=1,
+        bytesize=8
+    )
+    print('serial port open')
+except serial.serialException:
+    serial.Serial('/dev/rfcomm0').close()
+    print('serial port not opened')
+
 #set board mode
 GPIO.setmode(GPIO.BOARD)
 
@@ -47,6 +75,11 @@ while (1)
 
 
 '''
+while 1:
+     print (ser.read(10))
+    
 
 
 # for exit interrupt GPIO.cleanup()
+GPIO.cleanup()
+ser.close()
