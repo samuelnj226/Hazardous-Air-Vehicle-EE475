@@ -41,7 +41,6 @@ gpio_channels2 = [37, 38]
 GPIO.setup(gpio_channels1, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(gpio_channels2, GPIO.OUT, initial=GPIO.HIGH)
 
-# initialize connectiong with the emulated serial port for bluetooth
 # initialize PWM and GPIOs for motor control
 
 '''
@@ -76,7 +75,7 @@ while (1)
 
 '''
 while 1:
-     print (ser.read(10))
+     print (ser.readline(10))
     
 
 
