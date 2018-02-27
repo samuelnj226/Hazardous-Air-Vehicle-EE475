@@ -6661,48 +6661,36 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 84: printString();
 "84
 [e ( _printString ..  ]
-[; ;main.c: 86: while (1) {
 "86
+[v _commandpart `uc ~T0 @X0 1 a ]
+[; ;main.c: 86: char commandpart;
+[; ;main.c: 88: while (1) {
+"88
 [e :U 834 ]
 {
-[; ;main.c: 87: data = read_xyzvalues();
-"87
+[; ;main.c: 89: data = read_xyzvalues();
+"89
 [e = _data ( _read_xyzvalues ..  ]
-[; ;main.c: 88: _delay((unsigned long)((100)*(16000000/4000.0)));
-"88
+[; ;main.c: 90: _delay((unsigned long)((100)*(16000000/4000.0)));
+"90
 [e ( __delay (1 -> * -> -> 100 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
-[; ;main.c: 91: EUSART1_Write((uint8_t) (data.x >> 8) & 0xff);
-"91
-[e ( _EUSART1_Write (1 -> & -> -> >> . _data 0 -> 8 `i `uc `i -> 255 `i `uc ]
-[; ;main.c: 92: EUSART1_Write((uint8_t) (data.x) & 0xff);
-"92
-[e ( _EUSART1_Write (1 -> & -> -> . _data 0 `uc `i -> 255 `i `uc ]
-[; ;main.c: 93: EUSART1_Write((uint8_t) (data.y >> 8) & 0xff);
+[; ;main.c: 93: printf("%d%d%d", data.x, data.y, data.z);
 "93
-[e ( _EUSART1_Write (1 -> & -> -> >> . _data 1 -> 8 `i `uc `i -> 255 `i `uc ]
-[; ;main.c: 94: EUSART1_Write((uint8_t) (data.y) & 0xff);
+[e ( _printf , , , (. :s 1C . _data 0 . _data 1 . _data 2 ]
+[; ;main.c: 94: printf("\r\n");
 "94
-[e ( _EUSART1_Write (1 -> & -> -> . _data 1 `uc `i -> 255 `i `uc ]
-[; ;main.c: 95: EUSART1_Write((uint8_t) (data.y >> 8) & 0xff);
+[e ( _printf :s 2C ]
 "95
-[e ( _EUSART1_Write (1 -> & -> -> >> . _data 1 -> 8 `i `uc `i -> 255 `i `uc ]
-[; ;main.c: 96: EUSART1_Write((uint8_t) (data.y) & 0xff);
-"96
-[e ( _EUSART1_Write (1 -> & -> -> . _data 1 `uc `i -> 255 `i `uc ]
-[; ;main.c: 97: printf("\r\n");
-"97
-[e ( _printf :s 1C ]
-"98
 }
 [e :U 833 ]
-"86
+"88
 [e $U 834  ]
 [e :U 835 ]
-[; ;main.c: 98: }
-[; ;main.c: 99: }
-"99
+[; ;main.c: 95: }
+[; ;main.c: 96: }
+"96
 [e :UE 832 ]
 }
-[p f _printf 8388608 ]
-[a 1C 13 10 0 ]
-
+[p f _printf 8388736 ]
+[a 1C 37 100 37 100 37 100 0 ]
+[a 2C 13 10 0 ]
