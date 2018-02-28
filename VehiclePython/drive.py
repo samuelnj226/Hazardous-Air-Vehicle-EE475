@@ -9,17 +9,6 @@ import sys
 import signal
 import struct
 
-#close GPIOs and serial port
-def sigterm_handler(_signo, _stack_frame):
-    GPIO.cleanup()
-    ser.close()
-    print("exiting...")
-    sys.exit(0)
-
-#set interrupt for sigterm
-signal.signal(signal.SIGTERM, sigterm_handler)
-signal.signal(signal.SIGINT, sigterm_handler)
-
 try:
     ser = serial.Serial(
         port='/dev/rfcomm0',
@@ -36,18 +25,43 @@ except serial.serialException:
 #set board mode
 GPIO.setmode(GPIO.BOARD)
 
-#setup motor control GPIOS channel 11 and 12
+#setup motor enable control (for direction)
 gpio_channels1 = [35, 36] 
 gpio_channels2 = [37, 38]
 GPIO.setup(gpio_channels1, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(gpio_channels2, GPIO.OUT, initial=GPIO.HIGH)
 
-# initialize PWM and GPIOs for motor control
+# initialize PWM for motor speed control
+gpio_pwm_channels = [31, 32]
+GPIO.setup(gpio_pwm_channels, GPIO.OUT)
+rightPWM = GPIO.PWM(31, 10000)
+leftPWM = GPIO.PWM(32, 10000)
+
+leftDuty = 0
+rightDuty = 0
+
+rightPWM.start(0)
+leftPWM.start(0)
+
+#close GPIOs and serial port (interupt)
+def sigterm_handler(_signo, _stack_frame):
+    rightPWM.ChangeDutyCycle(0)
+    leftPWM.ChangeDutyCycle(0)
+    rightPWM.stop()
+    leftPWM.stop()
+    GPIO.cleanup()
+    ser.close()
+    print("exiting...")
+    sys.exit(0)
+
+#set interrupt for sigterm and sigint
+signal.signal(signal.SIGTERM, sigterm_handler)
+signal.signal(signal.SIGINT, sigterm_handler)
+
+
 
 '''
 while (1)
-    get x y z;
-    ignore z value;
     y positive is forward
     x positive is right
 
@@ -75,14 +89,39 @@ while (1)
 
 
 '''
+ser.readline()
 while 1:
     command = ser.readline()
     unpackedCommand = struct.unpack('hhhh', command);
-    print (unpackedCommand)
+    x = unpackedCommand[0]
+    y = unpackedCommand[1]
+    z = unpackedCommand[2]
+
+
+    # set forward speed
+    if y < 200:
+        rightDuty = 0
+        leftDuty = 0
+    elif y > 1600:
+        rightDuty = 100
+        leftDuty = 100
+    else:
+        rightDuty = y/1600 * 100
+        leftDuty = y/1600 * 100
+        
+    # set turn format
+    #right turn
+    if x > 200:
+        rightDuty = rightDuty * (4000 - x)/4000
+    elif x < -200: #left turn
+        leftDuty = leftDuty * (4000 - x)/4000
+
+    rightPWM.ChangeDutyCycle(rightDuty)
+    leftPWM.ChangeDutyCycle(leftDuty)
+
+    print(unpackedCommand)
+    print(rightDuty)
+    print(leftDuty)
 
     
 
-
-# for exit interrupt GPIO.cleanup()
-GPIO.cleanup()
-ser.close()
