@@ -90,11 +90,17 @@ void main(void) {
         //printf("\n\rValues are, x: %d, y: %d, z: %d", temp, temp, data.z);
         
         EUSART1_Write(data.x & 0xff);
+        __delay_ms(5);
         EUSART1_Write((data.x>>8) & 0xff);
+        __delay_ms(5);
         EUSART1_Write(data.y & 0xff);
+        __delay_ms(5);
         EUSART1_Write((data.y>>8) & 0xff);
+        __delay_ms(5);
         EUSART1_Write(data.z & 0xff);
+        __delay_ms(5);
         EUSART1_Write((data.z>>8) & 0xff);
+        __delay_ms(5);
         printf("\r\n");
     }
 }

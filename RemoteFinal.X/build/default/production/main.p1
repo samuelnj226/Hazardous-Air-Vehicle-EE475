@@ -6671,33 +6671,51 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 92: EUSART1_Write(data.x & 0xff);
 "92
 [e ( _EUSART1_Write (1 -> & . _data 0 -> 255 `i `uc ]
-[; ;main.c: 93: EUSART1_Write((data.x>>8) & 0xff);
+[; ;main.c: 93: _delay((unsigned long)((5)*(16000000/4000.0)));
 "93
-[e ( _EUSART1_Write (1 -> & >> . _data 0 -> 8 `i -> 255 `i `uc ]
-[; ;main.c: 94: EUSART1_Write(data.y & 0xff);
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
+[; ;main.c: 94: EUSART1_Write((data.x>>8) & 0xff);
 "94
-[e ( _EUSART1_Write (1 -> & . _data 1 -> 255 `i `uc ]
-[; ;main.c: 95: EUSART1_Write((data.y>>8) & 0xff);
+[e ( _EUSART1_Write (1 -> & >> . _data 0 -> 8 `i -> 255 `i `uc ]
+[; ;main.c: 95: _delay((unsigned long)((5)*(16000000/4000.0)));
 "95
-[e ( _EUSART1_Write (1 -> & >> . _data 1 -> 8 `i -> 255 `i `uc ]
-[; ;main.c: 96: EUSART1_Write(data.z & 0xff);
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
+[; ;main.c: 96: EUSART1_Write(data.y & 0xff);
 "96
-[e ( _EUSART1_Write (1 -> & . _data 2 -> 255 `i `uc ]
-[; ;main.c: 97: EUSART1_Write((data.z>>8) & 0xff);
+[e ( _EUSART1_Write (1 -> & . _data 1 -> 255 `i `uc ]
+[; ;main.c: 97: _delay((unsigned long)((5)*(16000000/4000.0)));
 "97
-[e ( _EUSART1_Write (1 -> & >> . _data 2 -> 8 `i -> 255 `i `uc ]
-[; ;main.c: 98: printf("\r\n");
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
+[; ;main.c: 98: EUSART1_Write((data.y>>8) & 0xff);
 "98
-[e ( _printf :s 1C ]
+[e ( _EUSART1_Write (1 -> & >> . _data 1 -> 8 `i -> 255 `i `uc ]
+[; ;main.c: 99: _delay((unsigned long)((5)*(16000000/4000.0)));
 "99
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
+[; ;main.c: 100: EUSART1_Write(data.z & 0xff);
+"100
+[e ( _EUSART1_Write (1 -> & . _data 2 -> 255 `i `uc ]
+[; ;main.c: 101: _delay((unsigned long)((5)*(16000000/4000.0)));
+"101
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
+[; ;main.c: 102: EUSART1_Write((data.z>>8) & 0xff);
+"102
+[e ( _EUSART1_Write (1 -> & >> . _data 2 -> 8 `i -> 255 `i `uc ]
+[; ;main.c: 103: _delay((unsigned long)((5)*(16000000/4000.0)));
+"103
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
+[; ;main.c: 104: printf("\r\n");
+"104
+[e ( _printf :s 1C ]
+"105
 }
 [e :U 833 ]
 "87
 [e $U 834  ]
 [e :U 835 ]
-[; ;main.c: 99: }
-[; ;main.c: 100: }
-"100
+[; ;main.c: 105: }
+[; ;main.c: 106: }
+"106
 [e :UE 832 ]
 }
 [p f _printf 8388608 ]
