@@ -8559,16 +8559,20 @@ SYSTEM_Initialize();
 
 ACCELEROMETER_Initialize();
 
-printString();
 
-char commandpart;
+
 
 while (1) {
 data = read_xyzvalues();
 _delay((unsigned long)((100)*(16000000/4000.0)));
 
 
-printf("%d%d%d", data.x, data.y, data.z);
+EUSART1_Write(data.x & 0xff);
+EUSART1_Write((data.x>>8) & 0xff);
+EUSART1_Write(data.y & 0xff);
+EUSART1_Write((data.y>>8) & 0xff);
+EUSART1_Write(data.z & 0xff);
+EUSART1_Write((data.z>>8) & 0xff);
 printf("\r\n");
 }
 }

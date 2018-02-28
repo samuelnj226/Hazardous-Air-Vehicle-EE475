@@ -81,16 +81,20 @@ void main(void) {
     
     ACCELEROMETER_Initialize();
     
-    printString();
-    
-    char commandpart;
+    //take out later
+    //printString();
     
     while (1) {
         data = read_xyzvalues();
         __delay_ms(100);
-        //write_register(MMA8451_REG_PL_CFG, 0x40);
-        //printf("\n\rValues are, x: %d, y: %d, z: %d", data.x, data.y, data.z);
-        printf("%d%d%d", data.x, data.y, data.z);
+        //printf("\n\rValues are, x: %d, y: %d, z: %d", temp, temp, data.z);
+        
+        EUSART1_Write(data.x & 0xff);
+        EUSART1_Write((data.x>>8) & 0xff);
+        EUSART1_Write(data.y & 0xff);
+        EUSART1_Write((data.y>>8) & 0xff);
+        EUSART1_Write(data.z & 0xff);
+        EUSART1_Write((data.z>>8) & 0xff);
         printf("\r\n");
     }
 }

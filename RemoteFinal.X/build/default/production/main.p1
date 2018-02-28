@@ -6658,39 +6658,48 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 82: ACCELEROMETER_Initialize();
 "82
 [e ( _ACCELEROMETER_Initialize ..  ]
-[; ;main.c: 84: printString();
-"84
-[e ( _printString ..  ]
-"86
-[v _commandpart `uc ~T0 @X0 1 a ]
-[; ;main.c: 86: char commandpart;
-[; ;main.c: 88: while (1) {
-"88
+[; ;main.c: 87: while (1) {
+"87
 [e :U 834 ]
 {
-[; ;main.c: 89: data = read_xyzvalues();
-"89
+[; ;main.c: 88: data = read_xyzvalues();
+"88
 [e = _data ( _read_xyzvalues ..  ]
-[; ;main.c: 90: _delay((unsigned long)((100)*(16000000/4000.0)));
-"90
+[; ;main.c: 89: _delay((unsigned long)((100)*(16000000/4000.0)));
+"89
 [e ( __delay (1 -> * -> -> 100 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
-[; ;main.c: 93: printf("%d%d%d", data.x, data.y, data.z);
+[; ;main.c: 92: EUSART1_Write(data.x & 0xff);
+"92
+[e ( _EUSART1_Write (1 -> & . _data 0 -> 255 `i `uc ]
+[; ;main.c: 93: EUSART1_Write((data.x>>8) & 0xff);
 "93
-[e ( _printf , , , (. :s 1C . _data 0 . _data 1 . _data 2 ]
-[; ;main.c: 94: printf("\r\n");
+[e ( _EUSART1_Write (1 -> & >> . _data 0 -> 8 `i -> 255 `i `uc ]
+[; ;main.c: 94: EUSART1_Write(data.y & 0xff);
 "94
-[e ( _printf :s 2C ]
+[e ( _EUSART1_Write (1 -> & . _data 1 -> 255 `i `uc ]
+[; ;main.c: 95: EUSART1_Write((data.y>>8) & 0xff);
 "95
+[e ( _EUSART1_Write (1 -> & >> . _data 1 -> 8 `i -> 255 `i `uc ]
+[; ;main.c: 96: EUSART1_Write(data.z & 0xff);
+"96
+[e ( _EUSART1_Write (1 -> & . _data 2 -> 255 `i `uc ]
+[; ;main.c: 97: EUSART1_Write((data.z>>8) & 0xff);
+"97
+[e ( _EUSART1_Write (1 -> & >> . _data 2 -> 8 `i -> 255 `i `uc ]
+[; ;main.c: 98: printf("\r\n");
+"98
+[e ( _printf :s 1C ]
+"99
 }
 [e :U 833 ]
-"88
+"87
 [e $U 834  ]
 [e :U 835 ]
-[; ;main.c: 95: }
-[; ;main.c: 96: }
-"96
+[; ;main.c: 99: }
+[; ;main.c: 100: }
+"100
 [e :UE 832 ]
 }
-[p f _printf 8388736 ]
-[a 1C 37 100 37 100 37 100 0 ]
-[a 2C 13 10 0 ]
+[p f _printf 8388608 ]
+[a 1C 13 10 0 ]
+
