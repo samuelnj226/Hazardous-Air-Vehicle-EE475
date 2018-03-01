@@ -8579,7 +8579,9 @@ EUSART1_Write(data.z & 0xff);
 _delay((unsigned long)((5)*(16000000/4000.0)));
 EUSART1_Write((data.z>>8) & 0xff);
 _delay((unsigned long)((5)*(16000000/4000.0)));
-printf("\r\n");
+printf("\r");
+_delay((unsigned long)((5)*(16000000/4000.0)));
+printf("\n");
 }
 }
 

@@ -101,7 +101,9 @@ void main(void) {
         __delay_ms(5);
         EUSART1_Write((data.z>>8) & 0xff);
         __delay_ms(5);
-        printf("\r\n");
+        printf("\r");
+        __delay_ms(5);
+        printf("\n");
     }
 }
 /**

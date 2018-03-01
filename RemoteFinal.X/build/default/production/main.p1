@@ -6704,20 +6704,26 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 103: _delay((unsigned long)((5)*(16000000/4000.0)));
 "103
 [e ( __delay (1 -> * -> -> 5 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
-[; ;main.c: 104: printf("\r\n");
+[; ;main.c: 104: printf("\r");
 "104
 [e ( _printf :s 1C ]
+[; ;main.c: 105: _delay((unsigned long)((5)*(16000000/4000.0)));
 "105
+[e ( __delay (1 -> * -> -> 5 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
+[; ;main.c: 106: printf("\n");
+"106
+[e ( _printf :s 2C ]
+"107
 }
 [e :U 833 ]
 "87
 [e $U 834  ]
 [e :U 835 ]
-[; ;main.c: 105: }
-[; ;main.c: 106: }
-"106
+[; ;main.c: 107: }
+[; ;main.c: 108: }
+"108
 [e :UE 832 ]
 }
 [p f _printf 8388608 ]
-[a 1C 13 10 0 ]
-
+[a 1C 13 0 ]
+[a 2C 10 0 ]
