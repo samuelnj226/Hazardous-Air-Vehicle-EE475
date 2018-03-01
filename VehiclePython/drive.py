@@ -92,36 +92,39 @@ while (1)
 ser.readline()
 while 1:
     command = ser.readline()
-    unpackedCommand = struct.unpack('hhhh', command);
-    x = unpackedCommand[0]
-    y = unpackedCommand[1]
-    z = unpackedCommand[2]
+    try:
+        print(command)
+        unpackedCommand = struct.unpack('hhhh', command)
+        print(unpackedCommand)
+        x = unpackedCommand[0]
+        y = unpackedCommand[1]
+        z = unpackedCommand[2]
 
 
-    # set forward speed
-    if y < 200:
-        rightDuty = 0
-        leftDuty = 0
-    elif y > 1600:
-        rightDuty = 100
-        leftDuty = 100
-    else:
-        rightDuty = y/1600 * 100
-        leftDuty = y/1600 * 100
-        
-    # set turn format
-    #right turn
-    if x > 200:
-        rightDuty = rightDuty * (4000 - x)/4000
-    elif x < -200: #left turn
-        leftDuty = leftDuty * (4000 - x)/4000
+        # set forward speed
+        if y < 200:
+            rightDuty = 0
+            leftDuty = 0
+        elif y > 800:
+            rightDuty = 100
+            leftDuty = 100
+        else:
+            rightDuty = y/800 * 100
+            leftDuty = y/800 * 100
+            
+        # set turn format
+        #right turn
+        if x > 300:
+            rightDuty = rightDuty * (4000 - x)/4000
+        elif x < -300: #left turn
+            leftDuty = leftDuty * (4000 + x)/4000
 
-    rightPWM.ChangeDutyCycle(rightDuty)
-    leftPWM.ChangeDutyCycle(leftDuty)
+        rightPWM.ChangeDutyCycle(rightDuty)
+        leftPWM.ChangeDutyCycle(leftDuty)
 
-    print(unpackedCommand)
-    print(rightDuty)
-    print(leftDuty)
+    # catch bluetooth error
+    except struct.error:
+        print("error received")
 
     
 
