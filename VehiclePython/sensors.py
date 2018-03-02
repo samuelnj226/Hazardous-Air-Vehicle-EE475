@@ -1,4 +1,5 @@
 # code ideas taken from adafruit library for this sensor, but have been adapted.
+# for the raspberry pi based on the spec sheet and different function calls
 # https://github.com/adafruit/Adafruit_CircuitPython_SGP30/blob/master/adafruit_sgp30.py
 
 import smbus
@@ -19,21 +20,37 @@ class AirQualitySensor:
         #setup bus
         self.bus = smbus.SMBus(1) # 0 indicates /dev/i2c-0
 
+        #check that it is a SGP30 sensor
+        features = self.readFromCommand([0x20, 0x2F], 0.01, 1)
+        if features[0] != _SGP30_FEATURESET
+            raise RuntimeError("could not find sensor")
+
+        #initialize IAQ algorithm
 
 
-    #write data, then read back after delay
-    def readFromCommand(self, data, delay, reply_size)
+
+    #write command, and then read back 3 * reply_size bytes
+    #then return an array of size reply_size containing 16-bit numbers
+    #after checking the CRC codes
+    def readFromCommand(self, command, delay, reply_size)
         #with self.bus
-        if isinstance(data, list):
-            self.bus.write_block_data(_SGP30_DEFAULT_I2C_ADDR, data[0], data[1:len(data)])
-        else:
-            self.bus.write_byte(_SGP30_DEFAULT_I2C_ADDR, data)
+        self.bus.write_i2c_block_data(_SGP30_DEFAULT_I2C_ADDR, command[0], command[1:len(command)])
 
         time.delay(delay)
 
-        data = read_block_data(_SGP30_DEFAULT_I2C_ADDR, reply_size)
+        data = read_i2c_block_data(_SGP30_DEFAULT_I2C_ADDR, 0)
+
+        #check CRC here
+        result = []
+        for i in range(reply_size):
+            if self._generate_crc([data[3*i], data[3*i+1]]) != data[3*i+2]
+                raise RuntimeError('CRC Error');
+            result.append(data[3*i] << 8 | data[3*i+1])
+
+        return result
 
     #copied directlly from adafruit library
+    # https://github.com/adafruit/Adafruit_CircuitPython_SGP30/blob/master/adafruit_sgp30.py
     def _generate_crc(self, data):
         """8-bit CRC algorithm for checking data"""
         crc = _SGP30_CRC8_INIT
