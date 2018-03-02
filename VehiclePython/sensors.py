@@ -3,23 +3,21 @@
 
 import smbus
 import time
-from micropython import const
 
-#taken from example driver
 #constants
-_SGP30_DEFAULT_I2C_ADDR  = const(0x58)
-_SGP30_FEATURESET        = const(0x0020)
+_SGP30_DEFAULT_I2C_ADDR  = 0x58
+_SGP30_FEATURESET        = 0x0020
 
-_SGP30_CRC8_POLYNOMIAL   = const(0x31)
-_SGP30_CRC8_INIT         = const(0xFF)
-_SGP30_WORD_LEN          = const(2)
+_SGP30_CRC8_POLYNOMIAL   = 0x31
+_SGP30_CRC8_INIT         = 0xFF
+_SGP30_WORD_LEN          = 2
 
 #class to control bus
 class AirQualitySensor:
 
     def __init__(self):
         #setup bus
-        self.bus = smbus.SMBus(0) # 0 indicates /dev/i2c-0
+        self.bus = smbus.SMBus(1) # 0 indicates /dev/i2c-0
 
 
 
