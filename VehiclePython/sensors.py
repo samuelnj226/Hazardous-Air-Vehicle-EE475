@@ -33,5 +33,17 @@ class AirQualitySensor:
 
         data = read_block_data(_SGP30_DEFAULT_I2C_ADDR, reply_size)
 
-    
+    #copied directlly from adafruit library
+    def _generate_crc(self, data):
+        """8-bit CRC algorithm for checking data"""
+        crc = _SGP30_CRC8_INIT
+        # calculates 8-Bit checksum with given polynomial
+        for byte in data:
+            crc ^= byte
+            for _ in range(8):
+                if crc & 0x80:
+                    crc = (crc << 1) ^ _SGP30_CRC8_POLYNOMIAL
+                else:
+                    crc <<= 1
+        return crc & 0xFF
 
