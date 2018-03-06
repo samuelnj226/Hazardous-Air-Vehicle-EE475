@@ -54,6 +54,17 @@ def sigterm_handler(_signo, _stack_frame):
     print("exiting...")
     sys.exit(0)
 
+#forward
+def setForward():
+    GPIO.output(gpio_channels1, GPIO.LOW)
+    GPIO.output(gpio_channels2, GPIO.HIGH)
+
+#backward
+def setBackward():
+    GPIO.output(gpio_channels1, GPIO.HIGH)
+    GPIO.output(gpio_channels2, GPIO.LOW)
+
+    
 #set interrupt for sigterm and sigint
 signal.signal(signal.SIGTERM, sigterm_handler)
 signal.signal(signal.SIGINT, sigterm_handler)
@@ -62,34 +73,60 @@ ser.readline()
 while 1:
     command = ser.readline()
     try:
-        print(command)
+        #print(command)
         unpackedCommand = struct.unpack('hhhh', command)
-        print(unpackedCommand)
+        #print(unpackedCommand)
         x = unpackedCommand[0]
         y = unpackedCommand[1]
         z = unpackedCommand[2]
 
+        if y > 0:
+            setForward()
 
-        # set forward speed
-        if y < 200:
-            rightDuty = 0
-            leftDuty = 0
-        elif y > 800:
-            rightDuty = 100
-            leftDuty = 100
+            # set forward speed
+            if y < 200:
+                rightDuty = 0
+                leftDuty = 0
+            elif y > 800:
+                rightDuty = 100
+                leftDuty = 100
+            else:
+                rightDuty = y/800 * 100
+                leftDuty = y/800 * 100
+                
+            # set turn format
+            #right turn
+            if x > 300:
+                rightDuty = rightDuty * (4000 - x)/4000
+            elif x < -300: #left turn
+                leftDuty = leftDuty * (4000 + x)/4000
+
+
         else:
-            rightDuty = y/800 * 100
-            leftDuty = y/800 * 100
-            
-        # set turn format
-        #right turn
-        if x > 300:
-            rightDuty = rightDuty * (4000 - x)/4000
-        elif x < -300: #left turn
-            leftDuty = leftDuty * (4000 + x)/4000
+            setBackward()
+
+            # set forward speed
+            if y > -200:
+                rightDuty = 0
+                leftDuty = 0
+            elif y < -800:
+                rightDuty = 100
+                leftDuty = 100
+            else:
+                rightDuty = abs(y)/800 * 100
+                leftDuty = abs(y)/800 * 100
+                
+            # set turn format
+            #right turn
+            if x > 300:
+                rightDuty = rightDuty * (4000 - x)/4000
+            elif x < -300: #left turn
+                leftDuty = leftDuty * (4000 + x)/4000
+
 
         rightPWM.ChangeDutyCycle(rightDuty)
         leftPWM.ChangeDutyCycle(leftDuty)
+
 
     # catch bluetooth error
     except struct.error:
