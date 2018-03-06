@@ -80,16 +80,13 @@ class AirQualityTempSensor:
     #every one second
     def __sensor_read_thread(self):
         while 1:
-            #data = self.__readFromCommand([0x20, 0x08], 0.05, 2)
-            #self.co2 = data[0]
-            #self.tvoc = data[1]
-            #time.sleep(0.5)
+            data = self.__readFromCommand([0x20, 0x08], 0.05, 2)
+            self.co2 = data[0]
+            self.tvoc = data[1]
+            time.sleep(0.5)
             self.humid = self.__read_humidity()
             self.temp = self.__read_temperature()
             time.sleep(0.5)
-            #print(data)
-            print(self.temp)
-            print(self.humid)
             
 
     #for Si7021 sensor
@@ -97,16 +94,12 @@ class AirQualityTempSensor:
         self.bus.write_byte(_SI7021_DEFAULT_I2C_ADDR, command)
         data = []
         while 1:
-            print("here")
             try:
-                #data = self.bus.read_i2c_block_data(_SI7021_DEFAULT_I2C_ADDR, 0)
                 data.append(self.bus.read_byte(_SI7021_DEFAULT_I2C_ADDR))
                 data.append(self.bus.read_byte(_SI7021_DEFAULT_I2C_ADDR))
-                print(data)
                 if data[0] != 0xFF:
                     break
             except OSError:
-                print("error")
                 pass
             
         return data[0] << 8 | data[1]
