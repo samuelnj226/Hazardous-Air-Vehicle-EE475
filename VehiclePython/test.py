@@ -9,7 +9,7 @@ import sensors
 _SGP30_CRC8_POLYNOMIAL   = 0x31
 _SGP30_CRC8_INIT         = 0xFF
 
-sensor = sensors.AirQualitySensor()
+sensor = sensors.AirQualityTempSensor()
 
 
 

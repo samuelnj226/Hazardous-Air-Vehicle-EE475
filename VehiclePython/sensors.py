@@ -36,7 +36,7 @@ class AirQualityTempSensor:
             try:
                 data = self.bus.read_byte_data(_SI7021_DEFAULT_I2C_ADDR, _SI7021_READ_USER1)
                 break
-            except SOMETHING:
+            except OSError:
                 pass
 
         if data != _SI7021_USER1_VAL:
@@ -55,24 +55,72 @@ class AirQualityTempSensor:
         thread = threading.Thread(target = self.__sensor_read_thread)
         thread.start()
 
+    #for SGP30 sensor
     #get CO2 reading
     def getCO2(self):
         return self.co2
 
+    #for SGP30 sensor
     #get TVOC reading
     def getVOC(self):
         return self.tvoc
 
+    #for SGP30 sensor
+    #get CO2 reading
+    def getTemp(self):
+        return self.temp
+
+    #for SGP30 sensor
+    #get TVOC reading
+    def getHumid(self):
+        return self.humid
+
+    #for SGP30 sensor
     #continuously reads sensor data so IAQ algorithm is optimal
     #every one second
     def __sensor_read_thread(self):
         while 1:
-            data = self.__readFromCommand([0x20, 0x08], 0.05, 2)
-            self.co2 = data[0]
-            self.tvoc = data[1]
-            time.sleep(1)
-            print(data)
+            #data = self.__readFromCommand([0x20, 0x08], 0.05, 2)
+            #self.co2 = data[0]
+            #self.tvoc = data[1]
+            #time.sleep(0.5)
+            self.humid = self.__read_humidity()
+            self.temp = self.__read_temperature()
+            time.sleep(0.5)
+            #print(data)
+            print(self.temp)
+            print(self.humid)
+            
 
+    #for Si7021 sensor
+    def __read_SI7021(self, command):
+        self.bus.write_byte(_SI7021_DEFAULT_I2C_ADDR, command)
+        data = []
+        while 1:
+            print("here")
+            try:
+                #data = self.bus.read_i2c_block_data(_SI7021_DEFAULT_I2C_ADDR, 0)
+                data.append(self.bus.read_byte(_SI7021_DEFAULT_I2C_ADDR))
+                data.append(self.bus.read_byte(_SI7021_DEFAULT_I2C_ADDR))
+                print(data)
+                if data[0] != 0xFF:
+                    break
+            except OSError:
+                print("error")
+                pass
+            
+        return data[0] << 8 | data[1]
+
+    #for Si7021 sensor
+    def __read_temperature(self):
+        return self.__read_SI7021(_SI7021_TEMPERATURE) * 175.72 / 65536.0 - 46.85
+
+    #for Si7021 sensor
+    def __read_humidity(self):
+        return self.__read_SI7021(_SI7021_HUMIDITY) * 125.0 / 65536.0 - 6.0
+        
+
+    #for SGP30 sensor
     #write command, and then read back 3 * reply_size bytes
     #then return an array of size reply_size containing 16-bit numbers
     #after checking the CRC codes
@@ -93,6 +141,7 @@ class AirQualityTempSensor:
 
         return result
 
+    #for SGP30 sensor
     #copied directlly from adafruit library, for generating CRC
     # https://github.com/adafruit/Adafruit_CircuitPython_SGP30/blob/master/adafruit_sgp30.py
     def __generate_crc(self, data):
