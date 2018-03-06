@@ -6,26 +6,47 @@ import smbus
 import time
 import threading
 
-#constants
+#constants for Air Quality Sensor
 _SGP30_DEFAULT_I2C_ADDR  = 0x58
 _SGP30_FEATURESET        = 0x0020
 
 _SGP30_CRC8_POLYNOMIAL   = 0x31
 _SGP30_CRC8_INIT         = 0xFF
-_SGP30_WORD_LEN          = 2
+
+#constants for Temp Sensor
+_SI7021_DEFAULT_I2C_ADDR = 0x40
+
+_SI7021_HUMIDITY         = 0xF5
+_SI7021_TEMPERATURE      = 0xF3
+_SI7021_RESET            = 0xFE
+_SI7021_READ_USER1       = 0xE7
+_SI7021_USER1_VAL        = 0x3A
 
 #class to control bus
-class AirQualitySensor:
+class AirQualityTempSensor:
 
     #constructor
     def __init__(self):
         #setup bus
         self.bus = smbus.SMBus(1) # 0 indicates /dev/i2c-0
 
+        #reset the SI7021 sensor (temperature) and check it's correct
+        self.bus.write_byte(_SI7021_DEFAULT_I2C_ADDR, _SI7021_RESET)
+        while 1:
+            try:
+                data = self.bus.read_byte_data(_SI7021_DEFAULT_I2C_ADDR, _SI7021_READ_USER1)
+                break
+            except SOMETHING:
+                pass
+
+        if data != _SI7021_USER1_VAL:
+            raise RuntimeError("could not find sensor SI7021")
+
+
         #check that it is a SGP30 sensor
         features = self.__readFromCommand([0x20, 0x2F], 0.01, 1)
         if features[0] != _SGP30_FEATURESET:
-            raise RuntimeError("could not find sensor")
+            raise RuntimeError("could not find sensor SGP30")
 
         #initialize IAQ algorithm
         self.__readFromCommand([0x20, 0x03], 0.01, 0)
@@ -72,7 +93,7 @@ class AirQualitySensor:
 
         return result
 
-    #copied directlly from adafruit library
+    #copied directlly from adafruit library, for generating CRC
     # https://github.com/adafruit/Adafruit_CircuitPython_SGP30/blob/master/adafruit_sgp30.py
     def __generate_crc(self, data):
         """8-bit CRC algorithm for checking data"""
