@@ -4,11 +4,16 @@
 import smbus
 import time
 
-bus = smbus.SMBus(1) # 0 indicates /dev/i2c-0
+import sensors
 
 _SGP30_CRC8_POLYNOMIAL   = 0x31
 _SGP30_CRC8_INIT         = 0xFF
 
+sensor = sensors.AirQualitySensor()
+
+
+
+'''
 #copied directlly from adafruit library
 def _generate_crc(data):
     """8-bit CRC algorithm for checking data"""
@@ -31,5 +36,6 @@ while 1:
     print(_generate_crc([0, 0]))
     print(_generate_crc([0, 100]))
     print(_generate_crc([202, 154]))
+'''
 
 

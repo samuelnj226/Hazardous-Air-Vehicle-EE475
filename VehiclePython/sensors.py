@@ -24,7 +24,7 @@ class AirQualitySensor:
 
         #check that it is a SGP30 sensor
         features = self.__readFromCommand([0x20, 0x2F], 0.01, 1)
-        if features[0] != _SGP30_FEATURESET
+        if features[0] != _SGP30_FEATURESET:
             raise RuntimeError("could not find sensor")
 
         #initialize IAQ algorithm
@@ -44,7 +44,7 @@ class AirQualitySensor:
 
     #continuously reads sensor data so IAQ algorithm is optimal
     #every one second
-    def __sensor_read_thread
+    def __sensor_read_thread(self):
         while 1:
             data = self.__readFromCommand([0x20, 0x08], 0.05, 2)
             self.co2 = data[0]
@@ -55,18 +55,18 @@ class AirQualitySensor:
     #write command, and then read back 3 * reply_size bytes
     #then return an array of size reply_size containing 16-bit numbers
     #after checking the CRC codes
-    def __readFromCommand(self, command, delay, reply_size)
+    def __readFromCommand(self, command, delay, reply_size):
         #with self.bus
         self.bus.write_i2c_block_data(_SGP30_DEFAULT_I2C_ADDR, command[0], command[1:len(command)])
 
         time.sleep(delay)
 
-        data = read_i2c_block_data(_SGP30_DEFAULT_I2C_ADDR, 0)
+        data = self.bus.read_i2c_block_data(_SGP30_DEFAULT_I2C_ADDR, 0)
 
         #check CRC here
         result = []
         for i in range(reply_size):
-            if self.__generate_crc([data[3*i], data[3*i+1]]) != data[3*i+2]
+            if self.__generate_crc([data[3*i], data[3*i+1]]) != data[3*i+2]:
                 raise RuntimeError('CRC Error');
             result.append(data[3*i] << 8 | data[3*i+1])
 
