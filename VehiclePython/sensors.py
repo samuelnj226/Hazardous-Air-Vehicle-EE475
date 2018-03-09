@@ -32,6 +32,7 @@ class AirQualityTempSensor:
 
         #reset the SI7021 sensor (temperature) and check it's correct
         self.bus.write_byte(_SI7021_DEFAULT_I2C_ADDR, _SI7021_RESET)
+        time.sleep(0.5)
         while 1:
             try:
                 data = self.bus.read_byte_data(_SI7021_DEFAULT_I2C_ADDR, _SI7021_READ_USER1)
@@ -87,6 +88,10 @@ class AirQualityTempSensor:
             self.humid = self.__read_humidity()
             self.temp = self.__read_temperature()
             time.sleep(0.5)
+            print(self.temp)
+            print(self.humid)
+            print(self.co2)
+            print(self.tvoc)
             
 
     #for Si7021 sensor
