@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <title>Hazardous Vehicle Camera</title>
+    <link rel="stylesheet" href='../static/style.css'/>
+    <style>
+		body {
+			text-align: center;
+		}
+    </style>
+    <style>
+	h5 {
+		font-size: 1em
+	}
+    </style>
+  </head>
+  <body>
+    <h1>Hazardous Vehicle Camera</h1>
+    <h3><img src="{{ url_for('video_feed') }}" height = "60%" width="60%"></h3>
+	<hr>
+	<h4> PAN Angle: <a href="/pan/-"class="button">-</a> [ {{ panServoAngle }} ] <a href="/pan/+"class="button">+</a> </h4>
+	<h4> TILT Angle: <a href="/tilt/-"class="button">-</a> [ {{ tiltServoAngle }} ] <a href="/tilt/+"class="button">+</a> </h4> 
+	<hr>
+	<!-- <h5> TEMPERATURE ===> <a href="/Temperature/-"class="button">Get</a> [ {{ temp }} ] </h5> -->
+	<!-- <embed src = {{ url_for('temp_feed') }} </embed> -->
+	<p id = "temp"> </p>
+	
+	<p id = "humid"> </p>
+	<p id = "tvoc"> </p>
+	<p id = "co2"> </p>
+  </body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script> 
+	var repeater;
+	function getSensor() {
+		$.getJSON("/temp_feed", function(response) {
+			document.getElementById("temp").innerHTML = "Temperature: " + response[0] + " degrees Celsius";
+			document.getElementById("humid").innerHTML = "Humidity: " + response[1] + "%";
+			document.getElementById("tvoc").innerHTML = "TVOC: " + response[2] + " ppb";
+			document.getElementById("co2").innerHTML = "CO2: " + response[3] + " ppm";
+
+			var tvoc = document.getElementById("tvoc");
+			var co2 = document.getElementById("co2");
+
+			//warnings for CO2
+			if (response[3] > 40000) {
+				co2.style.backgroundColor = "red";
+				co2.textContent += " Level 4: Permanent Damage";
+			} else if (response[3] > 5000) {
+				co2.style.backgroundColor = "#FF69B4";
+				co2.textContent += " Level 3: Highly Dangerous";
+			} else if (response[3] > 2000) {
+				co2.style.backgroundColor = "orange";
+				co2.textContent += " Level 2: Short Term Damage";
+			} else if (response[3] > 1000) {
+				co2.style.backgroundColor = "green";
+				co2.textContent += " Level 1: Stuffy Air";
+			} else {
+				co2.style.backgroundColor = "initial";
+			}
+
+			//warnings for TVOC
+			if (response[2] > 20000) {
+				tvoc.style.backgroundColor = "red";
+				tvoc.textContent += " Level 2: Moderate Danger";
+			} else if (response[2] > 7000) {
+				tvoc.style.backgroundColor = "orange";
+				tvoc.textContent += " Level 1: High Danger";
+			} else {
+				tvoc.style.backgroundColor = "initial";
+			}
+		
+		});
+
+		repeater = setTimeout(getSensor, 1000);
+		
+	}
+
+	window.onload = getSensor;
+</script>
